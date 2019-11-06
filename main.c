@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     
     int qtd_arq = argc - 4;
     int *lin[qtd_arq];
-    int i,j = 0; 
+    int i=0, j=0, m = 0; 
     int num_th = atoi(argv[1]); //na pos[1] esta o num de threads
     int *col;
     long vetor_tam[qtd_arq];
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
         FILE *arq = fopen(argv[arquivo+2],"rb");
         rewind(arq);
         
-        long tam;
+        //long tam;
         vetor_tam[arquivo] = tam_vet(arq);
         //tam = tam_vet(arq);
         if(vetor_tam[arquivo] > max_vetor){
@@ -119,10 +119,13 @@ int main(int argc, char *argv[]) {
         for(i =0; i< vetor_tam[arquivo]; i++){
             printf("[%d] ",col[i]);
         } 
-        for(int m = 0; m< qtd_arq; m++){
+
+        /*for(int m = 0; m< qtd_arq; m++){
             //lin[m] = malloc(sizeof(int)*tam);
             lin[m] = col;
-        }
+        }*/
+
+        lin[m++] = col;
         
         printf("\n");
         
@@ -138,14 +141,20 @@ int main(int argc, char *argv[]) {
     //Preencher vetor com 0
     
     for(int n = 0; n < qtd_arq ; n++){
+
+        if (vetor_tam[n] < max_vetor)
+        {
+          lin[n] = reallocarray(lin[n],max_vetor,sizeof(int));
+        }
        
         printf("Tamanho vetor do arq%d = %ld\n",n+1,vetor_tam[n]);
         
             //lin[n-2];
-            for(int p = 0; p < max_vetor; p++){
-                lin[n][vetor_tam[n]+p] = 0;
-                
+            printf("Vetor:%d, p=%ld ate %d\n", n+1, vetor_tam[n], max_vetor);
+            for(int p = vetor_tam[n]; p < max_vetor; p++){
+                lin[n][p] = 0;
             }
+
             for(int o = 0; o < max_vetor; o++){
                 printf("[%d] ",lin[n][o]);
             }
