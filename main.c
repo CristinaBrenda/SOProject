@@ -65,6 +65,7 @@ int main(int argc, char *argv[]) {
     int *lin[qtd_arq];
     int i,j = 0; 
     int num_th = atoi(argv[1]); //na pos[1] esta o num de threads
+    int *col;
     
     int max_vetor = 0 ;
     //prints para teste
@@ -75,7 +76,7 @@ int main(int argc, char *argv[]) {
     for(int arquivo = 2; arquivo < (argc-2) ; arquivo++){
         FILE *arq = fopen(argv[arquivo],"rb");
         rewind(arq);
-        int *col;
+        
         long tam;
         tam = tam_vet(arq);
         if(tam > max_vetor){
@@ -139,10 +140,17 @@ int main(int argc, char *argv[]) {
         long tam2;
         tam2 = tam_vet(arq2);
         printf("Tamanho vetor do arq%d = %ld\n",n-1,tam2);
-        lin[0];
-        for(int p = tam2; p <= max_vetor; p++){
-           col[p] = 0;
+        for(int q =0; q < qtd_arq; q++){
+            lin[q];
+            for(int p = tam2; p <= max_vetor; p++){
+            col[p] = 0;
+            }
+            for(int o = 0; o < max_vetor; o++){
+                printf("[%d] ",col[o]);
+            }
+            printf("\n");
         }
+        
     }
       
      
