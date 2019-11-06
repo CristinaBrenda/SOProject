@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
     int i,j = 0; 
     int num_th = atoi(argv[1]); //na pos[1] esta o num de threads
     int *col;
+    long vetor_tam[qtd_arq];
     
     int max_vetor = 0 ;
     //prints para teste
@@ -73,23 +74,24 @@ int main(int argc, char *argv[]) {
     printf("Num de threads %d\n",num_th);
     
     //ler arquivo
-    for(int arquivo = 2; arquivo < (argc-2) ; arquivo++){
-        FILE *arq = fopen(argv[arquivo],"rb");
+    for(int arquivo = 0; arquivo < (argc-4) ; arquivo++){
+        FILE *arq = fopen(argv[arquivo+2],"rb");
         rewind(arq);
         
         long tam;
-        tam = tam_vet(arq);
-        if(tam > max_vetor){
-            max_vetor = tam;
+        vetor_tam[arquivo] = tam_vet(arq);
+        //tam = tam_vet(arq);
+        if(vetor_tam[arquivo] > max_vetor){
+            max_vetor = vetor_tam[arquivo];
         }
         
-        printf("tamanho do vetor = %ld\n",tam);
+        printf("tamanho do vetor = %ld\n",vetor_tam[arquivo]);
         
         //ler arquivo
         //ler_arqs(arq,col,tam);
        
-        col = (int *) malloc(tam *sizeof(int));
-        for (j=0; j<tam;j++){
+        col = (int *) malloc(vetor_tam[arquivo] *sizeof(int));
+        for (j=0; j<vetor_tam[arquivo];j++){
             fread(&col[j],sizeof(int),1,arq);
             printf("[%d] ", col[j]);
         }
@@ -99,9 +101,9 @@ int main(int argc, char *argv[]) {
         //ordenar_vet(arq,col,tam,qtd_arq,lin);
        
         int aux =0;
-        for (i = 0; i < tam; i++)
+        for (i = 0; i < vetor_tam[arquivo]; i++)
             {
-                for (int j = 0; j < tam; j++)
+                for (int j = 0; j < vetor_tam[arquivo]; j++)
                 {
                     if (col[i] < col[j])
                     {
@@ -114,11 +116,11 @@ int main(int argc, char *argv[]) {
             }
          
         //printando o vetor ordenado
-        for(i =0; i< tam; i++){
+        for(i =0; i< vetor_tam[arquivo]; i++){
             printf("[%d] ",col[i]);
         } 
         for(int m = 0; m< qtd_arq; m++){
-            lin[m] = malloc(sizeof(col));
+            //lin[m] = malloc(sizeof(int)*tam);
             lin[m] = col;
         }
         
@@ -134,20 +136,18 @@ int main(int argc, char *argv[]) {
     //ATE AQUI FUNCIONA CORRETAMENTE
     
     //Preencher vetor com 0
-     
-    for(int n = 2; n < (argc-2) ; n++){
-        FILE *arq2 = fopen(argv[n],"rb");
-        long tam2;
-        tam2 = tam_vet(arq2);
-        printf("Tamanho vetor do arq%d = %ld\n",n-1,tam2);
+    
+    for(int n = 0; n < qtd_arq ; n++){
+       
+        printf("Tamanho vetor do arq%d = %ld\n",n+1,vetor_tam[n]);
         
             //lin[n-2];
-            for(int p = tam2; p <= max_vetor; p++){
-                lin[n-2];
-                col[p] = 0;
+            for(int p = 0; p < max_vetor; p++){
+                lin[n][vetor_tam[n]+p] = 0;
+                
             }
             for(int o = 0; o < max_vetor; o++){
-                printf("[%d] ",col[o]);
+                printf("[%d] ",lin[n][o]);
             }
             printf("\n");
         
