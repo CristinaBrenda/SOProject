@@ -141,9 +141,10 @@ int main(int argc, char *argv[]) {
         tam2 = tam_vet(arq2);
         printf("Tamanho vetor do arq%d = %ld\n",n-1,tam2);
         
-            lin[n-2];
+            //lin[n-2];
             for(int p = tam2; p <= max_vetor; p++){
-            col[p] = 0;
+                lin[n-2];
+                col[p] = 0;
             }
             for(int o = 0; o < max_vetor; o++){
                 printf("[%d] ",col[o]);
