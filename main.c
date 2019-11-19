@@ -15,7 +15,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <pthread.h>   //Threads
+#include <pthread.h> 
+#include <math.h>
+#include <time.h>
 
 int **lin;
 
@@ -79,7 +81,7 @@ void ordenar_vet2(int num_lin,long vetor_tam){
      * */
 }
 
-void merge(int arr[], int l, int m, int r,int qtde) 
+void merge(int arr[], int l, int m, int r) 
 { 
 	
     int i, j, k; 
@@ -135,7 +137,7 @@ void merge(int arr[], int l, int m, int r,int qtde)
 	for (int i = l; i <= r; i++){
         printf("%d ",arr[i]); 
     }
-	
+	//printf("\n");
 } 
 
 void *ordenar_vet(void *data){
@@ -155,7 +157,7 @@ void *ordenar_vet(void *data){
         //printf("%d ",lin[num_lin][i]); 
     }
 	
-	printf("\n");
+	//printf("\n");
     int aux =0;
     int i;
     for (i = qtde->colInicial; i < qtde->colFinal; i++){
@@ -172,6 +174,7 @@ void *ordenar_vet(void *data){
     for(int p =qtde->colInicial; p< qtde->colFinal; p++){
         //printf("[%d] ",lin[num_lin][p]);
     } 
+    //printf("\n");
     /*
     for(int m = 0; m< qtd_arq; m++){
         lin[m] = malloc(sizeof(col));
@@ -188,10 +191,11 @@ int main(int argc, char *argv[]) {
     int i=0, j=0, m = 0; 
     int num_th = atoi(argv[1]); //na pos[1] esta o num de threads
     int *col;
-    long vetor_tam[qtd_arq];
+    long vetor_tam[qtd_arq]; //vetor armazena a qtd de elementos de cada arquivo
     lin = (int **) malloc (qtd_arq*sizeof(int*));
-    
     int max_vetor = 0 ;
+    clock_t tempo[2];
+   
     //prints para teste
     printf("QTD de arq = %d\n", qtd_arq);
     printf("Num de threads %d\n",num_th);
@@ -199,10 +203,10 @@ int main(int argc, char *argv[]) {
 	
 	pthread_t t[num_th];
     
-	printf("valor : %d\n",num_th%(argc-4));
+	//printf("valor : %d\n",num_th%(argc-3));
     
 	
-    
+        tempo[0] = clock();
     //ler arquivo
     for(int arquivo = 0; arquivo < (argc-4) ; arquivo++){
         FILE *arq = fopen(argv[arquivo+2],"rb");
@@ -215,11 +219,7 @@ int main(int argc, char *argv[]) {
             max_vetor = vetor_tam[arquivo];
         }
         
-        //printf("tamanho do vetor = %ld\n",vetor_tam[arquivo]);
-        
-        //ler arquivo
-        //ler_arqs(arq,col,tam);
-       
+               
         lin[arquivo] = (int *) malloc(vetor_tam[arquivo] *sizeof(int));
         for (j=0; j<vetor_tam[arquivo];j++){
             fread(&lin[arquivo][j],sizeof(int),1,arq);
@@ -228,38 +228,8 @@ int main(int argc, char *argv[]) {
         
         printf("\n");
         //ordenar vetor
-		
-		
-        //ordenar_vet(arquivo, vetor_tam[arquivo]);
-       /*
-        int aux =0;
-        for (i = 0; i < vetor_tam[arquivo]; i++)
-            {
-                for (int j = 0; j < vetor_tam[arquivo]; j++)
-                {
-                    if (col[i] < col[j])
-                    {
-                    //troca dos valores  
-                        aux = col[i];
-                        col[i] = col[j];
-                        col[j] = aux;
-                    }
-                }
-            }
-        */ 
-        //printando o vetor ordenado
-        /*for(i =0; i< vetor_tam[arquivo]; i++){
-            printf("[%d] ",col[i]);
-        } */
-
-        /*for(int m = 0; m< qtd_arq; m++){
-            //lin[m] = malloc(sizeof(int)*tam);
-            lin[m] = col;
-        }*/
-
-        //lin[m++] = col;
-        
-        printf("\n");
+	
+      
         
         //for(i = 0; i< qtd_arq; i++){
         //    lin[i] = col;
@@ -279,11 +249,11 @@ int main(int argc, char *argv[]) {
 			q1->colInicial = inicial;
 			inicial+=vetor_tam[arquivo]/num_th;
 			q1->colFinal = inicial;
-
+                        
 			pthread_create(&t[i], NULL, ordenar_vet, (void *)q1);
 
-//			printf("valor : %ld \t",q1->colInicial);
-	//		printf("%ld \t",q1->colFinal);
+			//printf("valor : %ld \t",q1->colInicial);
+			//printf("%ld \t",q1->colFinal);
 		}
 		
 		Qtde * q1 = (Qtde*) malloc(sizeof(Qtde));
@@ -292,48 +262,86 @@ int main(int argc, char *argv[]) {
 		q1->colInicial = inicial;
 		inicial+=vetor_tam[arquivo]/num_th+(vetor_tam[arquivo]%num_th);
 		q1->colFinal = inicial;
+                //printf("Subvetor resto termina em %d",inicial);
 		pthread_create(&t[num_th-1], NULL, ordenar_vet, (void *)q1);
 
-	//	printf("valor : %ld \t",q1->colInicial);
-	//	printf("%ld \t",q1->colFinal);
+		//printf("\nvalor : %ld \t",q1->colInicial);
+		//printf("\nvalor %ld \t",q1->colFinal);
 			
 		
 		//printf("final: %d \t",inicial);
 		
-		printf("\n");
+		
 		
 		void * ret;
 		for(int i=0;i<num_th;i++){//iteração para o término das threads e  a soma dos valores retornados por elas
 			pthread_join(t[i], &ret);
+                        
 		}
-		
-		merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1,num_th);
+                
+                printf("\n");
+                
+                //merge 
+                //merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
+                
+                
+               
+		//switch para a qtd de threads
+                switch (num_th){
+                    case 2: // funciona corretamente
+                        merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
+                        printf("\n\nValores merge: %ld %ld\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
+                        break; 
+                    
+                    case 4: //erro para arquivos com elementos nao multiplos de 4
+                      merge(lin[arquivo],0,vetor_tam[arquivo]/4-1,((vetor_tam[arquivo]/4)*2)-1);
+                        printf("\n\nValores merge: 0 %ld %ld \n\n",vetor_tam[arquivo]/4-1,((vetor_tam[arquivo]/4)*2)-1 );
+                        
+                        merge(lin[arquivo],(vetor_tam[arquivo]/4)*2,
+                                ((vetor_tam[arquivo]/4)*3)-1,
+                                vetor_tam[arquivo]-1);
+                        printf("\n\nValores merge: %ld %ld %ld\n\n",((vetor_tam[arquivo]/4)*2)-1,
+                                ((vetor_tam[arquivo]/4)*3)-1,
+                                vetor_tam[arquivo]-1);
+                        
+                        merge(lin[arquivo],0,(vetor_tam[arquivo]/2)-1,vetor_tam[arquivo]-1);
+                        printf("\n\nValores merge: %ld %ld\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
+                        break;
+                       
+                    case 6:
+                        //merge(lin[arquivo],0,vetor_tam[arquivo]/6-1,((vetor_tam[arquivo]/6)*2)-1);
+                       // printf("\n Valores merge %ld %ld\n",vetor_tam[arquivo]/6-1,((vetor_tam[arquivo]/6)*2)-1);
+                        
+                        
+                        
+                        break;
+                    default:
+                        printf("numero de threads invalido\n");
+                        
+                }
+                 
+                    
+                    
+                  
+                
+		//merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1,num_th);
     }
 	
      printf("\nmaior vetor possui %d posicoes\n",max_vetor);
     //ATE AQUI FUNCIONA CORRETAMENTE
-     
-    //dispara threads
-    //pthread create (ordenar);
-     
-    //join thread
-     
-    //thread create para gravar no arq de saida
-     
-     
-     
+     tempo[1] = clock();
+        
     //Preencher vetor com 0
-    
+    //FUNCIONA CORRETAMENTE
     for(int n = 0; n < qtd_arq ; n++){
 
         if (vetor_tam[n] < max_vetor)
         {
-          lin[n] = realloc(lin[n],max_vetor*sizeof(int));
+          lin[n] = realloc(lin[n],max_vetor*sizeof(int)); //realocar memoria para os vetores menores que o maior vator
         }
        
         printf("Tamanho vetor do arq%d = %ld\n",n+1,vetor_tam[n]);
         
-            //lin[n-2];
             printf("Vetor:%d, p=%ld ate %d\n", n+1, vetor_tam[n], max_vetor);
             for(int p = vetor_tam[n]; p < max_vetor; p++){
                 lin[n][p] = 0;
@@ -346,4 +354,12 @@ int main(int argc, char *argv[]) {
         
         
     }
+    
+     printf("\n\n=====TEMPO DE EXECUÇÃO======\n\n");
+     
+     
+     double time_spent = (tempo[1] - tempo[0]) *1000.0 / CLOCKS_PER_SEC ;
+         printf("Tempo: %g ms\n\n",time_spent);
+     
+    return 0; 
 }
