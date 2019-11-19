@@ -300,7 +300,7 @@ int main(int argc, char *argv[]) {
                         merge(lin[arquivo],(vetor_tam[arquivo]/4)*2,
                                 ((vetor_tam[arquivo]/4)*3)-1,
                                 vetor_tam[arquivo]-1);
-                        printf("\n\nValores merge: %ld %ld %ld\n\n",((vetor_tam[arquivo]/4)*2)-1,
+                        printf("\n\nValores merge: %ld %ld %ld\n\n",((vetor_tam[arquivo]/4)*2),
                                 ((vetor_tam[arquivo]/4)*3)-1,
                                 vetor_tam[arquivo]-1);
                         
