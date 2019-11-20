@@ -229,11 +229,13 @@ int main(int argc, char *argv[]) {
             max_vetor = vetor_tam[arquivo];
         }
         
-               
+        printf("Arquivo original:\n");     
         lin[arquivo] = (int *) malloc(vetor_tam[arquivo] *sizeof(int));
         for (j=0; j<vetor_tam[arquivo];j++){
             fread(&lin[arquivo][j],sizeof(int),1,arq);
-            //printf("[%d] ", col[j]);
+            printf("[%d] ",lin[arquivo][j]);
+            
+            
         }
         
         printf("\n");
