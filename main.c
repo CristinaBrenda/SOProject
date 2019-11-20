@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
                 //printf("\n");
                 
                 //print dos subvetores ordenados para teste
-                printf("ARQUIVO ORIGINAL\n");
+               /* printf("ARQUIVO ORIGINAL\n");
                 for(int n = 0; n < qtd_arq ; n++){
                     printf("Tamanho do arq %d\n",vetor_tam[n]);
                     for(int o = 0; o < max_vetor; o++){
@@ -291,38 +291,62 @@ int main(int argc, char *argv[]) {
                     }
                     printf("\n");
                 }
-                
+                */
                 
                 //merge 
                 //merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
                 
-                
-                int particao = vetor_tam[arquivo]/4; //1/4 do arquivo
-                        int posFinal = vetor_tam[arquivo] -1 ;//posicao final do arquivo
+                int umMeio = vetor_tam[arquivo]/2; //um meio (1/2) do arquivo
+                int umQuarto = vetor_tam[arquivo]/4; //um quarto (1/4) do arquivo
+                int umOitavo = vetor_tam[arquivo]/8; //um oitavo (1/8) do arquivo
+                int umDezesseis = vetor_tam[arquivo]/16; //um dezesseis(1/16) avos do arquivo
+                int posFinal = vetor_tam[arquivo] -1 ;//posicao final do arquivo
                 
 		//switch para a qtd de threads
                 switch (num_th){
                     case 2: // funciona corretamente
-                        merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
-                        printf("\n\nValores merge: %d %d\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
+                        merge(lin[arquivo],0,umMeio-1,posFinal); 
+                        printf("\n\nValores merge: %d %d\n\n",umMeio-1,posFinal);
                         break; 
                     
                     case 4: //erro para arquivos com elementos nao multiplos de 4
                         
-                        merge(lin[arquivo],0,particao-1,(particao*2)-1);
-                        printf("\n\nValores merge: 0 %d %d \n\n" ,particao-1,(particao*2)-1);
+                        merge(lin[arquivo],0,umQuarto-1,(umQuarto*2)-1);
+                        printf("\n\nValores merge: 0 %d %d \n\n" ,umQuarto-1,(umQuarto*2)-1);
                         
-                        merge(lin[arquivo],particao*2,(particao*3)-1,posFinal);
-                        printf("\n\nValores merge: %d %d %d\n\n",particao*2,(particao*3)-1,posFinal);
+                        merge(lin[arquivo],umQuarto*2,(umQuarto*3)-1,posFinal);
+                        printf("\n\nValores merge: %d %d %d\n\n",umQuarto*2,(umQuarto*3)-1,posFinal);
                         
-                        merge(lin[arquivo],0,(particao*2)-1,posFinal);
-                        printf("\n\nValores merge: %d %d\n\n",(particao*2)-1,posFinal);
+                        merge(lin[arquivo],0,(umQuarto*2)-1,posFinal);
+                        printf("\n\nValores merge: %d %d\n\n",(umQuarto*2)-1,posFinal);
                         break;
                        
-                    case 6:
-                        //merge(lin[arquivo],0,vetor_tam[arquivo]/6-1,((vetor_tam[arquivo]/6)*2)-1);
-                       // printf("\n Valores merge %ld %ld\n",vetor_tam[arquivo]/6-1,((vetor_tam[arquivo]/6)*2)-1);
+                    case 8:
                         
+                        merge(lin[arquivo],0,umOitavo-1,(umOitavo*2)-1); //primeira serie de merge
+                        printf("Valores do merge para 8 thread 0 %d %d\n",umOitavo-1,(umOitavo*2)-1);
+                        
+                        merge(lin[arquivo],umOitavo*2,(umOitavo*3)-1,(umOitavo*4)-1);
+                        printf("Valores do merge para 8 thread %d %d %d\n",umOitavo*2,(umOitavo*3)-1,(umOitavo*4)-1);
+                        
+                        merge(lin[arquivo],umOitavo*4,(umOitavo*5)-1,(umOitavo*6)-1);
+                        printf("Valores do merge para 8 thread %d %d %d\n",umOitavo*4,(umOitavo*5)-1,(umOitavo*6)-1);
+                         
+                        merge(lin[arquivo],umOitavo*6,(umOitavo*7)-1,posFinal); //fim da primeira serie de merge
+                        printf("Valores do merge para 8 thread %d %d %d\n\n",umOitavo*6,(umOitavo*7)-1,posFinal);
+                        
+                        merge(lin[arquivo],0,(umOitavo*2)-1,(umOitavo*4-1)); //segunda serie de merge
+                        printf("Valores do merge para 8 thread 0 %d %d\n",(umOitavo*2)-1,(umOitavo*4-1));
+                        
+                        merge(lin[arquivo],umOitavo*4,(umOitavo*6)-1,posFinal); //fim da segunda serie de merge
+                        printf("Valores do merge para 8 thread %d %d %d\n\n",umOitavo*4,(umOitavo*6)-1,posFinal);
+                        
+                        merge(lin[arquivo],0,(umOitavo*4)-1,posFinal); //merge final
+                        printf("Valores do merge para 8 thread 0 %d %d\n",(umOitavo*4)-1,posFinal);
+                        
+                        break;
+                    
+                    case 16:
                         
                         
                         break;
