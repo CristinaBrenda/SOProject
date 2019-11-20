@@ -10,7 +10,7 @@
  * 
  * Para garantir que a aplicação funcione corretamente
  * deve-se executá-lo no seguinte formato, seguindo 
- * a ordem de parametro: 
+ * a ordem de parametros: 
  *    - nome_do_programa
  *    - numero_de_threads
  *    - arquivos_de_entrada
