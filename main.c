@@ -285,23 +285,24 @@ int main(int argc, char *argv[]) {
         for(int p = vetor_tam[n]; p < max_vetor; p++){
             lin[n][p] = 0;
         }
-        printf("======Vetor final:=======\n");
+        //prints para teste
+       // printf("======Vetor final:=======\n");
         for(int o = 0; o < max_vetor; o++){
 
             fwrite(&lin[n][o],sizeof(int),1,arqFinal); //gravando no arquivo de saida 
-            printf("[%d] ",lin[n][o]);
+            //printf("[%d] ",lin[n][o]);
         }
-        printf("\n");
+        //printf("\n");
 
         
     }
      fclose(arqFinal);
     
-     printf("\n\n=====TEMPO DE EXECUÇÃO======\n\n");
+     printf("\n=====TEMPO DE EXECUÇÃO======\n");
      
      
      double time_spent = (tempo[1] - tempo[0]) *1000.0 / CLOCKS_PER_SEC ;
-         printf("Tempo: %g ms\n\n",time_spent);
+         printf("Tempo: %g ms\n",time_spent);
      
     return 0; 
 }
