@@ -173,7 +173,8 @@ int main(int argc, char *argv[]) {
         fclose(arq);  
 		
         int inicial=0;
-
+        
+        //divisao da qtd de elementos pela qtd de threadsq que ira gerar subvetores
         for(int i =0;i<num_th-1;i++){
                 Qtde * q1 = (Qtde*) malloc(sizeof(Qtde));
                 q1->qtdeInt = vetor_tam[arquivo];
@@ -185,7 +186,7 @@ int main(int argc, char *argv[]) {
                 pthread_create(&t[i], NULL, ordenar_vet, (void *)q1);
 
         }
-
+        //anexo do resto dos elementos ao ultimo subvetor
         Qtde * q1 = (Qtde*) malloc(sizeof(Qtde));
         q1->qtdeInt = vetor_tam[arquivo];
         q1->linha = arquivo;
@@ -202,7 +203,7 @@ int main(int argc, char *argv[]) {
 
         }
 
-        
+        //divisoes do tamanho do arquivo
         int umMeio = vetor_tam[arquivo]/2; //um meio (1/2) do arquivo
         int umQuarto = vetor_tam[arquivo]/4; //um quarto (1/4) do arquivo
         int umOitavo = vetor_tam[arquivo]/8; //um oitavo (1/8) do arquivo
