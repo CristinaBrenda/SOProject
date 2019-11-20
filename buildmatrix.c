@@ -202,7 +202,7 @@ int main(int argc, char *argv[]) {
                 pthread_join(t[i], &ret);
 
         }
-
+        tempo[1] = clock(); //hora final do processamento
         //divisoes do tamanho do arquivo
         int umMeio = vetor_tam[arquivo]/2; //um meio (1/2) do arquivo
         int umQuarto = vetor_tam[arquivo]/4; //um quarto (1/4) do arquivo
@@ -272,7 +272,7 @@ int main(int argc, char *argv[]) {
          
     }
  
-    tempo[1] = clock(); //hora final do processamento
+    
         
     //Preencher vetor com 0
       
