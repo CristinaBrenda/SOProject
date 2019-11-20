@@ -286,7 +286,7 @@ int main(int argc, char *argv[]) {
             lin[n][p] = 0;
         }
         //prints para teste
-       // printf("======Vetor final:=======\n");
+        //printf("\n======Vetor final:=======\n");
         for(int o = 0; o < max_vetor; o++){
 
             fwrite(&lin[n][o],sizeof(int),1,arqFinal); //gravando no arquivo de saida 
