@@ -348,6 +348,54 @@ int main(int argc, char *argv[]) {
                     
                     case 16:
                         
+                    //    printf("====primeira serie de merge=====\n\n");
+                        merge(lin[arquivo],0,umDezesseis-1,(umDezesseis*2)-1); //primeira serie de merge
+                    //    printf("Valores para 16 thr 0 %d %d\n\n",umDezesseis-1,(umDezesseis*2)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*2,(umDezesseis*3)-1,(umDezesseis*4)-1);
+                    //    printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*2,(umDezesseis*3)-1,(umDezesseis*4)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*4,(umDezesseis*5)-1,(umDezesseis*6)-1);
+                     //   printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*4,(umDezesseis*5)-1,(umDezesseis*6)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*6,(umDezesseis*7)-1,(umDezesseis*8)-1);
+                    //    printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*6,(umDezesseis*7)-1,(umDezesseis*8)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*8,(umDezesseis*9)-1,(umDezesseis*10)-1);
+                     //   printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*8,(umDezesseis*9)-1,(umDezesseis*10)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*10,(umDezesseis*11)-1,(umDezesseis*12)-1);
+                    //    printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*10,(umDezesseis*11)-1,(umDezesseis*12)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*12,(umDezesseis*13)-1,(umDezesseis*14)-1);
+                     //   printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*12,(umDezesseis*13)-1,(umDezesseis*14)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*14,(umDezesseis*15)-1,posFinal); //fim da primeira serie
+                     //   printf("Valores para 16 thr %d %d %d\n\n",umDezesseis*14,(umDezesseis*15)-1,posFinal);
+                       
+                     //   printf("====segunda serie de merge=====\n\n");
+                        
+                        merge(lin[arquivo],0,(umDezesseis*2)-1,(umDezesseis*4)-1); //segunda serie de merge
+                     //   printf("Valores do merge para 16 thread 0 %d %d\n\n",(umDezesseis*2)-1,(umDezesseis*4)-1);
+                                 
+                        merge(lin[arquivo],umDezesseis*4,(umDezesseis*6)-1,(umDezesseis*8)-1);
+                       // printf("Valores do merge para 16 thread %d %d %d\n\n",umDezesseis*4,(umDezesseis*6)-1,(umDezesseis*8)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*8,(umDezesseis*10)-1,(umDezesseis*12)-1);
+                        printf("Valores do merge para 16 thread %d %d %d\n\n",umDezesseis*8,(umDezesseis*10)-1,(umDezesseis*12)-1);
+                        
+                        merge(lin[arquivo],umDezesseis*12,(umDezesseis*14)-1,posFinal); //fim da segunda serie
+                        //printf("Valores do merge para 16 thread %d %d %d\n\n",umDezesseis*12,(umDezesseis*14)-1,posFinal);
+                       
+                        printf("====terceira serie de merge=====\n\n");
+                        merge(lin[arquivo],); //terceira serie de merge
+                        
+                        
+                        merge(lin[arquivo],); //fim da terceira serie
+                        
+                        printf("==== merge final\n\n");
+                        merge(lin[arquivo],); //merge final
+                  
                         
                         break;
                     default:
