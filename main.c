@@ -23,21 +23,22 @@ int **lin;
 
 typedef struct qtde{
     int linha;
-    long qtdeInt;
-    long colInicial;
-	long colFinal;
+    int qtdeInt;
+    int colInicial;
+	int colFinal;
 }Qtde;
 
 
-long tam_vet(FILE *arq){
+int tam_vet(FILE *arq){
     
-    long length; 
+    int length; 
     fseek(arq,0,SEEK_END);	
     length = ftell(arq); 
     fseek(arq,0,SEEK_SET); 
     return length/4;
 }
-void ler_arqs(FILE *arq,int *col,long tam){
+void ler_arqs(FILE *arq,int *col,int tam){
+    
     
     int j;
     col = (int *) malloc(tam *sizeof(int));
@@ -47,16 +48,16 @@ void ler_arqs(FILE *arq,int *col,long tam){
     }
     
 }
-void ordenar_vet2(int num_lin,long vetor_tam){
+void ordenar_vet2(int num_lin,int vetor_tam){
 	
-	printf("%ld\n",vetor_tam);
+	//printf("%d\n",vetor_tam);
 	
-	for (int i = 0; i < vetor_tam; i++){
-        printf("%d ",lin[num_lin][i]);
+	//for (int i = 0; i < vetor_tam; i++){
+       // printf("%d ",lin[num_lin][i]);
         
-    }
+   // }
 	
-	printf("\n");
+	//printf("\n");
     int aux =0;
     int i;
     for (i = 0; i < vetor_tam; i++){
@@ -70,9 +71,9 @@ void ordenar_vet2(int num_lin,long vetor_tam){
             }
         }
     }
-    for(int p =0; p< vetor_tam; p++){
-        printf("[%d] ",lin[num_lin][p]);
-    } 
+   // for(int p =0; p< vetor_tam; p++){
+     //   printf("[%d] ",lin[num_lin][p]);
+   // } 
     /*
     for(int m = 0; m< qtd_arq; m++){
         lin[m] = malloc(sizeof(col));
@@ -134,16 +135,16 @@ void merge(int arr[], int l, int m, int r)
         k++; 
     } 
 	
-	for (int i = l; i <= r; i++){
-        printf("%d ",arr[i]); 
-    }
+	//for (int i = l; i <= r; i++){
+        //printf("%d ",arr[i]); 
+        // }
 	//printf("\n");
 } 
 
 void *ordenar_vet(void *data){
     Qtde *qtde = (Qtde *)data;
 	
-	long vetor_tam = qtde->qtdeInt;
+	int vetor_tam = qtde->qtdeInt;
 	int num_lin = qtde->linha;
 	
 	//printf("valor : %ld \t",qtde->colInicial);
@@ -191,7 +192,7 @@ int main(int argc, char *argv[]) {
     int i=0, j=0, m = 0; 
     int num_th = atoi(argv[1]); //na pos[1] esta o num de threads
     int *col;
-    long vetor_tam[qtd_arq]; //vetor armazena a qtd de elementos de cada arquivo
+    int vetor_tam[qtd_arq]; //vetor armazena a qtd de elementos de cada arquivo
     lin = (int **) malloc (qtd_arq*sizeof(int*));
     int max_vetor = 0 ;
     clock_t tempo[2];
@@ -279,33 +280,43 @@ int main(int argc, char *argv[]) {
                         
 		}
                 
-                printf("\n");
+                //printf("\n");
+                
+                //print dos subvetores ordenados para teste
+                printf("ARQUIVO ORIGINAL\n");
+                for(int n = 0; n < qtd_arq ; n++){
+                    printf("Tamanho do arq %d\n",vetor_tam[n]);
+                    for(int o = 0; o < max_vetor; o++){
+                    printf("[%d] ",lin[n][o]);
+                    }
+                    printf("\n");
+                }
+                
                 
                 //merge 
                 //merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
                 
                 
-               
+                int particao = vetor_tam[arquivo]/4; //1/4 do arquivo
+                        int posFinal = vetor_tam[arquivo] -1 ;//posicao final do arquivo
+                
 		//switch para a qtd de threads
                 switch (num_th){
                     case 2: // funciona corretamente
                         merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1); 
-                        printf("\n\nValores merge: %ld %ld\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
+                        printf("\n\nValores merge: %d %d\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
                         break; 
                     
                     case 4: //erro para arquivos com elementos nao multiplos de 4
-                      merge(lin[arquivo],0,vetor_tam[arquivo]/4-1,((vetor_tam[arquivo]/4)*2)-1);
-                        printf("\n\nValores merge: 0 %ld %ld \n\n",vetor_tam[arquivo]/4-1,((vetor_tam[arquivo]/4)*2)-1 );
                         
-                        merge(lin[arquivo],(vetor_tam[arquivo]/4)*2,
-                                ((vetor_tam[arquivo]/4)*3)-1,
-                                vetor_tam[arquivo]-1);
-                        printf("\n\nValores merge: %ld %ld %ld\n\n",((vetor_tam[arquivo]/4)*2),
-                                ((vetor_tam[arquivo]/4)*3)-1,
-                                vetor_tam[arquivo]-1);
+                        merge(lin[arquivo],0,particao-1,(particao*2)-1);
+                        printf("\n\nValores merge: 0 %d %d \n\n" ,particao-1,(particao*2)-1);
                         
-                        merge(lin[arquivo],0,(vetor_tam[arquivo]/2)-1,vetor_tam[arquivo]-1);
-                        printf("\n\nValores merge: %ld %ld\n\n",vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1 );
+                        merge(lin[arquivo],particao*2,(particao*3)-1,posFinal);
+                        printf("\n\nValores merge: %d %d %d\n\n",particao*2,(particao*3)-1,posFinal);
+                        
+                        merge(lin[arquivo],0,(particao*2)-1,posFinal);
+                        printf("\n\nValores merge: %d %d\n\n",(particao*2)-1,posFinal);
                         break;
                        
                     case 6:
@@ -327,7 +338,7 @@ int main(int argc, char *argv[]) {
 		//merge(lin[arquivo],0,vetor_tam[arquivo]/2-1,vetor_tam[arquivo]-1,num_th);
     }
 	
-     printf("\nmaior vetor possui %d posicoes\n",max_vetor);
+    // printf("\nmaior vetor possui %d posicoes\n",max_vetor);
     //ATE AQUI FUNCIONA CORRETAMENTE
      tempo[1] = clock();
         
@@ -340,13 +351,13 @@ int main(int argc, char *argv[]) {
           lin[n] = realloc(lin[n],max_vetor*sizeof(int)); //realocar memoria para os vetores menores que o maior vator
         }
        
-        printf("Tamanho vetor do arq%d = %ld\n",n+1,vetor_tam[n]);
+       // printf("Tamanho vetor do arq%d = %d\n",n+1,vetor_tam[n]);
         
-            printf("Vetor:%d, p=%ld ate %d\n", n+1, vetor_tam[n], max_vetor);
+         //   printf("Vetor:%d, p=%d ate %d\n", n+1, vetor_tam[n], max_vetor);
             for(int p = vetor_tam[n]; p < max_vetor; p++){
                 lin[n][p] = 0;
             }
-
+            printf("======Vetor final:=======\n");
             for(int o = 0; o < max_vetor; o++){
                 printf("[%d] ",lin[n][o]);
             }
